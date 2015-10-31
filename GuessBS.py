@@ -23,7 +23,13 @@ for i in xrange(3):
 	# Ask the question
 	print '\nQuestion number #%d:' % (question_count,)
 	print questionAct.replace('\n', '')
-	ans = raw_input("Yes (Y) / No (N) / Maybe (M): ")
 	
+	# Get the answer (Y/N/M)
+	ans =  ""
+	while (ans not in ['Y', 'N', 'M', 'y', 'n', 'm']):
+		ans = raw_input("Yes (Y) / No (N) / Maybe (M): ")
+	# Set in uppercase
+	ans = ans.upper()
+
 	# One more question has been asked
 	question_count += 1
