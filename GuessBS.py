@@ -3,7 +3,7 @@
 #                                   GuessBS
 #
 #****************************************************************************
-import random
+import random, pickle
 
 # Welcome message
 print "GuessBS - Reverse Quizz - v0.1"
@@ -49,20 +49,27 @@ for i in xrange(5):
 
 ans = raw_input("\nWho was he ? (Please do not make any orthographic mistake...)\n")
 
-#score_files = open('rsc/score')
 # Read the score dictionary
+try:
+	score_file = open('rsc/score', 'rb+')
+	score_dict = pickle.load(score_file)
+except IOError:
+	print "No score file detected..."
+	score_file = open('rsc/score', 'wb+')
+	score_dict = {}
+except EOFError:
+	print "No data detected in the score file..."
+	score_dict = {}
+
 # Key = "FirstName LastName"
 # Value = {QuestionID : [Score, cardinal]}
 # Complexity for n characters, p questions answered k times in average :
 # Comp = O(n*p*k)
-# For instance :
-score_dict = {"Hubert Charles" : {0 : [0.95, 4], 1 : [0.96, 3], 2 : [0.5, 2]}}
 
 if ans in score_dict:
 	# If it is not the first time the character have been chosen by the user
 	# Store the answer for each question in his dictionary
     for question_id in ans_dict.keys():
-    	print ans_dict[question_id] 
     	if ans_dict[question_id] == 'M':
     		score_val = 0
     	if ans_dict[question_id] == 'Y':
@@ -94,3 +101,4 @@ else:
 
 # Write the score dictionary
 print score_dict
+pickle.dump(score_dict, score_file)
