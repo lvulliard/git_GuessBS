@@ -5,6 +5,7 @@
 #****************************************************************************
 import random, pickle
 
+
 # Welcome message
 print "GuessBS - Reverse Quizz - v0.1"
 print "Let's find someone from the BS dept. by answering a few questions!"
@@ -18,6 +19,29 @@ questions = questions_file.readlines()
 ans_dict = {}
 # ID of the current question
 question_id = random.randint(0, len(questions)-1)
+
+
+# Read the score dictionary
+try:
+	score_file = open('rsc/score', 'rb+')
+	score_dict = pickle.load(score_file)
+except IOError:
+	print "No score file detected..."
+	score_file = open('rsc/score', 'wb+')
+	score_dict = {}
+except EOFError:
+	print "No data detected in the score file..."
+	score_dict = {}
+
+# Key = "FirstName LastName"
+# Value = {QuestionID : [Score, cardinal]}
+# Complexity for n characters, p questions answered k times in average :
+# Comp = O(n*p*k)
+
+
+# Creating a similar structure for the character to guess
+guess_dict = {}
+# Format : {QuestionID : Score}, to be compared to known characters
 	
 # Ask 5 questions
 for i in xrange(5):
@@ -49,23 +73,7 @@ for i in xrange(5):
 
 ans = raw_input("\nWho was he ? (Please do not make any orthographic mistake...)\n")
 
-# Read the score dictionary
-try:
-	score_file = open('rsc/score', 'rb+')
-	score_dict = pickle.load(score_file)
-except IOError:
-	print "No score file detected..."
-	score_file = open('rsc/score', 'wb+')
-	score_dict = {}
-except EOFError:
-	print "No data detected in the score file..."
-	score_dict = {}
-
-# Key = "FirstName LastName"
-# Value = {QuestionID : [Score, cardinal]}
-# Complexity for n characters, p questions answered k times in average :
-# Comp = O(n*p*k)
-
+# Add the character of this run to the dictionary
 if ans in score_dict:
 	# If it is not the first time the character have been chosen by the user
 	# Store the answer for each question in his dictionary
