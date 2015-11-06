@@ -87,6 +87,16 @@ distance_dict = dict.fromkeys(score_dict.keys(), 0)
 for question_index, guess_score in guess_dict.iteritems():
 	# Get the mean value to this question in the known characters
 	question_mean = 0
+	# Number of characters for which the questions has been answered
+	# NB : != number of times this question has been answered 
+	answers_count = 0
+	for character, character_dict in score_dict.iteritems():
+		if question_index in character_dict.keys():
+			answers_count += 1
+			question_mean += (character_dict[question_index])[0]
+	if (answers_count != 0):
+		question_mean = float(question_mean)/float(answers_count)
+
 	# For each known character
 	for character, character_dict in score_dict.iteritems():
 		# Compute the distance variation for this question
@@ -97,6 +107,7 @@ for question_index, guess_score in guess_dict.iteritems():
 		else:
 			# Add the distance to the mean (i.e. best guess for the real value)
 			distance_dict[character] += abs(guess_score - question_mean)
+
 # To remove
 print distance_dict
 
