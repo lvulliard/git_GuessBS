@@ -1,3 +1,5 @@
+# coding: utf-8 
+
 #****************************************************************************
 #
 #                                   GuessBS
@@ -23,15 +25,18 @@ question_id = random.randint(0, len(questions)-1)
 
 # Read the score dictionary
 try:
-	score_file = open('rsc/score', 'rb+')
-	score_dict = pickle.load(score_file)
+	score_file_r = open('rsc/score', 'rb')
+	score_dict = pickle.load(score_file_r)
+	score_file_r.close()
 except IOError:
 	print "No score file detected..."
-	score_file = open('rsc/score', 'wb+')
 	score_dict = {}
 except EOFError:
 	print "No data detected in the score file..."
 	score_dict = {}
+
+# To remove
+print score_dict
 
 # Key = "FirstName LastName"
 # Value = {QuestionID : [Score, cardinal]}
@@ -68,8 +73,37 @@ for i in xrange(5):
 
 	ans_dict[question_id] = ans
 
+	if ans_dict[question_id] == 'M':
+		guess_dict[question_id] = 0
+	if ans_dict[question_id] == 'Y':
+		guess_dict[question_id] = 1	 
+	if ans_dict[question_id] == 'N':
+		guess_dict[question_id] = -1	
+
 	# One more question has been asked
 	question_count += 1
+
+
+# Comparison
+# Distance from the guess vector to each known character, initialized to 0
+distance_dict = dict.fromkeys(score_dict.keys(), 0)
+# Iterate on questions answered about the character
+for question_index, guess_score in guess_dict.iteritems():
+	# Get the mean value to this question in the known characters
+	question_mean = 0
+	# For each known character
+	for character, character_dict in score_dict.iteritems():
+		# Compute the distance variation for this question
+		# If the question have been answered about the known character
+		if question_index in character_dict.keys():
+			# Add the distance to the distance_dict
+			distance_dict[character] += abs(guess_score - (character_dict[question_index])[0])
+		else:
+			# Add the distance to the mean (i.e. best guess for the real value)
+			distance_dict[character] += abs(guess_score - question_mean)
+# To remove
+print distance_dict
+
 
 ans = raw_input("\nWho was he ? (Please do not make any orthographic mistake...)\n")
 
@@ -107,6 +141,9 @@ else:
     		score_val = -1
     	(score_dict[ans])[question_id] = [score_val, 1]
 
-# Write the score dictionary
+# To remove
 print score_dict
-pickle.dump(score_dict, score_file)
+# Write the score dictionary
+score_file_w = open('rsc/score', 'wb') 
+pickle.dump(score_dict, score_file_w)
+score_file_w.close()
