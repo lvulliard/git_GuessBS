@@ -17,8 +17,6 @@ question_count = 1
 # Put questions from a file into an array
 questions_file = open('rsc/questions')
 questions = questions_file.readlines()
-# Used to store answers
-ans_dict = {}
 # ID of the current question
 question_id = random.randint(0, len(questions)-1)
 
@@ -56,7 +54,7 @@ for i in xrange(5):
 		break
 	
 	# Chose randomly a question
-	while(question_id in ans_dict):
+	while(question_id in guess_dict):
 		question_id = random.randint(0, len(questions)-1)
 	actual_quest = questions[question_id]
 	
@@ -71,13 +69,11 @@ for i in xrange(5):
 	# Set in uppercase
 	ans = ans.upper()
 
-	ans_dict[question_id] = ans
-
-	if ans_dict[question_id] == 'M':
+	if ans == 'M':
 		guess_dict[question_id] = 0
-	if ans_dict[question_id] == 'Y':
+	if ans == 'Y':
 		guess_dict[question_id] = 1	 
-	if ans_dict[question_id] == 'N':
+	if ans == 'N':
 		guess_dict[question_id] = -1	
 
 	# One more question has been asked
@@ -111,13 +107,8 @@ ans = raw_input("\nWho was he ? (Please do not make any orthographic mistake...)
 if ans in score_dict:
 	# If it is not the first time the character have been chosen by the user
 	# Store the answer for each question in his dictionary
-    for question_id in ans_dict.keys():
-    	if ans_dict[question_id] == 'M':
-    		score_val = 0
-    	if ans_dict[question_id] == 'Y':
-    		score_val = 1	 
-    	if ans_dict[question_id] == 'N':
-    		score_val = -1
+    for question_id in guess_dict.keys():
+    	score_val = guess_dict[question_id]
     	if question_id in score_dict[ans] :
     		# Not the first time this question is aked about this character
     		# Do a weighted average
@@ -132,14 +123,8 @@ else:
 	# Create a dictionary for this character
     score_dict[ans] = {}
     # Store the answer for each question in his dictionary
-    for question_id in ans_dict.keys():
-    	if ans_dict[question_id] == 'M':
-    		score_val = 0
-    	if ans_dict[question_id] == 'Y':
-    		score_val = 1	 
-    	if ans_dict[question_id] == 'N':
-    		score_val = -1
-    	(score_dict[ans])[question_id] = [score_val, 1]
+    for question_id in guess_dict.keys():
+    	(score_dict[ans])[question_id] = [guess_dict[question_id], 1]
 
 # To remove
 print score_dict
