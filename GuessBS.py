@@ -33,9 +33,6 @@ except EOFError:
 	print "No data detected in the score file..."
 	score_dict = {}
 
-# To remove
-print score_dict
-
 # Key = "FirstName LastName"
 # Value = {QuestionID : [Score, cardinal]}
 # Complexity for n characters, p questions answered k times in average :
@@ -108,9 +105,6 @@ for question_index, guess_score in guess_dict.iteritems():
 			# Add the distance to the mean (i.e. best guess for the real value)
 			distance_dict[character] += abs(guess_score - question_mean)
 
-# To remove
-print distance_dict
-
 # Guessing
 # Used to store the best candidate
 best_guess = "nobody"
@@ -170,9 +164,6 @@ if ans == 'N':
 	    for question_id in guess_dict.keys():
 	    	(score_dict[ans])[question_id] = [guess_dict[question_id], 1]
 
-
-# To remove
-print score_dict
 # Write the score dictionary
 score_file_w = open('rsc/score', 'wb') 
 pickle.dump(score_dict, score_file_w)
