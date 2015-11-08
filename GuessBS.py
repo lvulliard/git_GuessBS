@@ -46,8 +46,8 @@ print score_dict
 guess_dict = {}
 # Format : {QuestionID : Score}, to be compared to known characters
 	
-# Ask 5 questions
-for i in xrange(5):
+# Ask 8 questions
+for i in xrange(8):
 	# If all questions have already been asked, stop
 	if question_count > len(questions):
 		print "\nThat's all the questions I know, sorry..."
@@ -111,31 +111,65 @@ for question_index, guess_score in guess_dict.iteritems():
 # To remove
 print distance_dict
 
+# Guessing
+# Used to store the best candidate
+best_guess = "nobody"
+best_dist = 2*len(questions)
+for character, character_dist in distance_dict.iteritems():
+	if character_dist < best_dist:
+		best_dist = character_dist
+		best_guess = character
 
-ans = raw_input("\nWho was he ? (Please do not make any orthographic mistake...)\n")
+print "\nI think of %s, am I right ?"%best_guess
+# Get the answer (Y/N)
+ans =  ""
+while (ans not in ['Y', 'N', 'y', 'n']):
+	ans = raw_input("Yes (Y) / No (N): ")
+# Set in uppercase
+ans = ans.upper()
 
-# Add the character of this run to the dictionary
-if ans in score_dict:
-	# If it is not the first time the character have been chosen by the user
+if ans == 'Y':
+	print "Cool !"	
+	# It is not the first time the character have been chosen by the user
 	# Store the answer for each question in his dictionary
-    for question_id in guess_dict.keys():
-    	score_val = guess_dict[question_id]
-    	if question_id in score_dict[ans] :
-    		# Not the first time this question is aked about this character
-    		# Do a weighted average
-    		old_score = (score_dict[ans])[question_id]
-    		new_card = old_score[1] + 1
-    		(score_dict[ans])[question_id] = [ (score_val+(old_score[0]*old_score[1]))/new_card, new_card]
-    	else :
-    		# First time this question is answered about that character
-	    	(score_dict[ans])[question_id] = [score_val, 1]
-else:
-	# If it is the first time
-	# Create a dictionary for this character
-    score_dict[ans] = {}
-    # Store the answer for each question in his dictionary
-    for question_id in guess_dict.keys():
-    	(score_dict[ans])[question_id] = [guess_dict[question_id], 1]
+	for question_id in guess_dict.keys():
+	   	score_val = guess_dict[question_id]
+	   	if question_id in score_dict[best_guess] :
+	   		# Not the first time this question is aked about this character
+	   		# Do a weighted average
+	   		old_score = (score_dict[best_guess])[question_id]
+	   		new_card = old_score[1] + 1
+	   		(score_dict[best_guess])[question_id] = [ (score_val+(old_score[0]*old_score[1]))/new_card, new_card]
+	   	else :
+	   		# First time this question is answered about that character
+			(score_dict[best_guess])[question_id] = [score_val, 1]
+	
+if ans == 'N':
+	print "Maybe next time..."
+	ans = raw_input("Who was he ? (Please do not make any orthographic mistake...)\n")
+	# Add the character of this run to the dictionary
+	if ans in score_dict:
+		# If it is not the first time the character have been chosen by the user
+		# Store the answer for each question in his dictionary
+	    for question_id in guess_dict.keys():
+	    	score_val = guess_dict[question_id]
+	    	if question_id in score_dict[ans] :
+	    		# Not the first time this question is aked about this character
+	    		# Do a weighted average
+	    		old_score = (score_dict[ans])[question_id]
+	    		new_card = old_score[1] + 1
+	    		(score_dict[ans])[question_id] = [ (score_val+(old_score[0]*old_score[1]))/new_card, new_card]
+	    	else :
+	    		# First time this question is answered about that character
+		    	(score_dict[ans])[question_id] = [score_val, 1]
+	else:
+		# If it is the first time
+		# Create a dictionary for this character
+	    score_dict[ans] = {}
+	    # Store the answer for each question in his dictionary
+	    for question_id in guess_dict.keys():
+	    	(score_dict[ans])[question_id] = [guess_dict[question_id], 1]
+
 
 # To remove
 print score_dict
