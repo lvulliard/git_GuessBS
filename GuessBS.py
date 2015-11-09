@@ -133,7 +133,7 @@ if ans == 'Y':
 	   		# Do a weighted average
 	   		old_score = (score_dict[best_guess])[question_id]
 	   		new_card = old_score[1] + 1
-	   		(score_dict[best_guess])[question_id] = [ (score_val+(old_score[0]*old_score[1]))/new_card, new_card]
+	   		(score_dict[best_guess])[question_id] = [ float(score_val+(old_score[0]*old_score[1]))/float(new_card), new_card]
 	   	else :
 	   		# First time this question is answered about that character
 			(score_dict[best_guess])[question_id] = [score_val, 1]
@@ -152,7 +152,7 @@ if ans == 'N':
 	    		# Do a weighted average
 	    		old_score = (score_dict[ans])[question_id]
 	    		new_card = old_score[1] + 1
-	    		(score_dict[ans])[question_id] = [ (score_val+(old_score[0]*old_score[1]))/new_card, new_card]
+	    		(score_dict[ans])[question_id] = [ float(score_val+(old_score[0]*old_score[1]))/float(new_card), new_card]
 	    	else :
 	    		# First time this question is answered about that character
 		    	(score_dict[ans])[question_id] = [score_val, 1]
