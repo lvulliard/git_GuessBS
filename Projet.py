@@ -14,9 +14,9 @@ sock.listen(100)
 
 def thread_test(newSocket):
 	
-	newSocket.sendall("GuessBS - Reverse Quizz - v0.1 \n Let\'s find someone from the BS dept. by answering a few questions!\n Pour quitter le jeu tapez \'exitt\' \n Entrer votre pseudonyme :")
+	newSocket.sendall("GuessBS - Reverse Quizz - v0.1 \nLet\'s find someone from the BS dept. by answering a few questions!\nTo quit the game please type \'exit\'. \nEnter your nickname:")
 	pseudo = newSocket.recv(1024)
-	print pseudo, "Connected"
+	print pseudo, "connected."
 
 # Number of questions asked
 	question_count = 1
@@ -63,7 +63,7 @@ def thread_test(newSocket):
 		
 # Ask the question
 		X = actual_quest.replace('\n', '')
-		newSocket.sendall('\nQuestion number #%d: \n %s' % (question_count,X,))
+		newSocket.sendall('\nQuestion number #%d: \n%s' % (question_count,X,))
 		
 		
 # Get the answer (Y/N/M)
@@ -144,9 +144,9 @@ def thread_test(newSocket):
 				(score_dict[best_guess])[question_id] = [score_val, 1]
 		
 	if ans == 'N':
-		newSocket.sendall( "Maybe next time... \n Who was he ? (Please do not make any orthographic mistake...)\n")
+		newSocket.sendall( "Maybe next time... \nWho was he? (Please do not make any orthographic mistake...)\n")
 		ans = newSocket.recv(1024)
-		newSocket.sendall("Thanks for Playing GuessBS \n")
+		newSocket.sendall("Maybe next time...\nThanks for Playing GuessBS! \n")
 		# Add the character of this run to the dictionary
 		if ans in score_dict:
 			# If it is not the first time the character have been chosen by the user

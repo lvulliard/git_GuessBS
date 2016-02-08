@@ -1,8 +1,9 @@
 from socket import *
 
+# Client socket creation
 s = socket(AF_INET,SOCK_STREAM)
 s.connect(('127.0.0.1',8000))
-print 'Connection au serveur'
+print 'Connection established.'
 name = s.recv(1024)
 print '\n', name
 name2 = data = raw_input()
@@ -22,7 +23,7 @@ while(1): # While
 		 		resp = raw_input("Yes (Y) / No (N) / Maybe (M): ")
 		 		c +=1
 		 	else:
-		 		print '\n Merci d entrer une reponse correct ', question
+		 		print '\nPlease enter a valid input (Y, N or M)!', question
 		 		resp = raw_input("Yes (Y) / No (N) / Maybe (M): ")
 		 
 		
