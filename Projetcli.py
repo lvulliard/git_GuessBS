@@ -8,13 +8,24 @@ print '\n', name
 name2 = data = raw_input()
 s.sendto(name2,('',51432))
 question = ''
+
 while(1): # While
+	resp = 'a'
+	c = 0
 	question = s.recv(1024)
 	if question == 'end':
 		break
 	else : 
-		print '\n', question
-		resp = raw_input("Yes (Y) / No (N) / Maybe (M): ")
+		while (resp not in ['Y', 'N', 'M', 'y', 'n', 'm']):
+			if c == 0:
+				print '\n', question
+		 		resp = raw_input("Yes (Y) / No (N) / Maybe (M): ")
+		 		c +=1
+		 	else:
+		 		print '\n Merci d entrer une reponse correct ', question
+		 		resp = raw_input("Yes (Y) / No (N) / Maybe (M): ")
+		 
+		
 		s.sendto(resp,('',51432))
 		print "reponse envoye: ", resp
 
