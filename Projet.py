@@ -83,7 +83,7 @@ def thread_test(newSocket):
 # One more question has been asked
 		question_count += 1
 		
-
+	newSocket.sendall('end')
 # Comparison
 # Distance from the guess vector to each known character, initialized to 0
 	distance_dict = dict.fromkeys(score_dict.keys(), 0)

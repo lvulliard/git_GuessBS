@@ -7,14 +7,16 @@ name = s.recv(1024)
 print '\n', name
 name2 = data = raw_input()
 s.sendto(name2,('',51432))
-
-for i in range(8): # While
-	
+question = ''
+while(1): # While
 	question = s.recv(1024)
-	print '\n', question
-	resp = raw_input("Yes (Y) / No (N) / Maybe (M): ")
-	s.sendto(resp,('',51432))
-	print "reponse envoye: ", resp
+	if question == 'end':
+		break
+	else : 
+		print '\n', question
+		resp = raw_input("Yes (Y) / No (N) / Maybe (M): ")
+		s.sendto(resp,('',51432))
+		print "reponse envoye: ", resp
 
 prop = s.recv(1024)
 print '\n',prop 
