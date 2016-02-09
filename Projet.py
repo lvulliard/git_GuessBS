@@ -11,10 +11,11 @@ sock.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 sock.bind(("",8000))
 sock.listen(100)
 
+clients = []
 
 def thread_test(newSocket):
 	
-	newSocket.sendall("GuessBS - Reverse Quizz - v0.1 \nLet\'s find someone from the BS dept. by answering a few questions!\nTo quit the game please type \'exit\'. \nEnter your nickname:")
+	newSocket.sendall("GuessBS - Reverse Quizz - v0.2 \nLet\'s find someone from the BS dept. by answering a few questions!\nTo quit the game please type \'exit\'. \nEnter your nickname:")
 	pseudo = newSocket.recv(1024)
 	print pseudo, "connected."
 
@@ -128,7 +129,7 @@ def thread_test(newSocket):
 	ans = ans.upper()
 
 	if ans == 'Y':
-		newSocket.sendall(  "Cool ! \n Thanks for Playing GuessBS \n")	
+		newSocket.sendall("Cool ! \nThanks for Playing GuessBS! \n")	
 		# It is not the first time the character have been chosen by the user
 		# Store the answer for each question in his dictionary
 		for question_id in guess_dict.keys():
@@ -144,7 +145,7 @@ def thread_test(newSocket):
 				(score_dict[best_guess])[question_id] = [score_val, 1]
 		
 	if ans == 'N':
-		newSocket.sendall( "Maybe next time... \nWho was he? (Please do not make any orthographic mistake...)\n")
+		newSocket.sendall("Maybe next time... \nWho was he? (Please do not make any orthographic mistake...)\n")
 		ans = newSocket.recv(1024)
 		newSocket.sendall("Maybe next time...\nThanks for Playing GuessBS! \n")
 		# Add the character of this run to the dictionary
@@ -175,18 +176,21 @@ def thread_test(newSocket):
 	pickle.dump(score_dict, score_file_w)
 	score_file_w.close()
 
-
+	# Game is done
+	# Remove client from the list
+	newSocket.shutdown(0)
+	clients.remove(newSocket)
+	print "Connection with", pseudo, "closed properly."
 
 
 try:
 	threads = []
-	clients = []
-	while True:
+	while 1:
 		newSocket, address = sock.accept()
    		t = threading.Thread(target = thread_test, args = (newSocket,))
    		threads.append(t)
    		clients.append(newSocket)
    		t.start()
-	print "Disconnected from", address
+		print "Connection from", address
 finally:
 	sock.close()
