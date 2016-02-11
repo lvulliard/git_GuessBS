@@ -56,6 +56,8 @@ if not user_exit :
 		s.sendto(rep,('',51432))
 		rep2 = s.recv(1024)
 		print '\n', rep2
+
+	#if it's not, server ask to write the name
 	elif rep == 'N' or rep == 'n':
 		s.sendto(rep,('',51432))
 		rep2 = s.recv(1024)
@@ -65,4 +67,11 @@ if not user_exit :
 		rep4 = s.recv(1024)
 		print '\n', rep4
 
+
 s.close()
+
+
+
+
+
+
