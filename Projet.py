@@ -6,6 +6,8 @@ import sys
 import signal
 from socket import *
 import random, pickle
+
+#definition of socket type TCP 
 sock = socket(AF_INET, SOCK_STREAM)
 sock.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 sock.bind(("",8000))
@@ -15,6 +17,7 @@ clients = []
 
 def thread_test(newSocket):
 	
+	#Initialisation of game
 	newSocket.sendall("GuessBS - Reverse Quizz - v0.2 \nLet\'s find someone from the BS dept. by answering a few questions!\nTo quit the game please type \'exit\'. \nEnter your nickname:")
 	pseudo = newSocket.recv(1024)
 	print pseudo, "connected."
@@ -147,7 +150,7 @@ def thread_test(newSocket):
 	if ans == 'N':
 		newSocket.sendall("Maybe next time... \nWho was he? (Please do not make any orthographic mistake...)\n")
 		ans = newSocket.recv(1024)
-		newSocket.sendall("Maybe next time...\nThanks for Playing GuessBS! \n")
+		newSocket.sendall("\nThanks for Playing GuessBS! \n")
 		# Add the character of this run to the dictionary
 		if ans in score_dict:
 			# If it is not the first time the character have been chosen by the user
