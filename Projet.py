@@ -13,6 +13,8 @@ sock.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 sock.bind(("",8000))
 sock.listen(100)
 
+# Lock used to avoid conflict in writing scores in the database
+dlock = threading.Lock() 
 clients = []
 
 def thread_test(newSocket):
@@ -54,7 +56,7 @@ def thread_test(newSocket):
 # Format : {QuestionID : Score}, to be compared to known characters
 		
 # Ask 8 questions
-	for i in xrange(8):
+	for i in xrange(10):
 # If all questions have already been asked, stop
 		if question_count > len(questions):
 			print "\nThat's all the questions I know, sorry..."
@@ -123,7 +125,7 @@ def thread_test(newSocket):
 			best_dist = character_dist
 			best_guess = character
 
-	newSocket.sendall( "\nI think of %s, am I right ?"%best_guess)
+	newSocket.sendall( "\nI think of %s, am I right?"%best_guess)
 	# Get the answer (Y/N)
 	ans =  ""
 	while (ans not in ['Y', 'N', 'y', 'n']):
@@ -175,9 +177,11 @@ def thread_test(newSocket):
 		    	(score_dict[ans])[question_id] = [guess_dict[question_id], 1]
 
 	# Write the score dictionary
+	dlock.acquire()
 	score_file_w = open('rsc/score', 'wb') 
 	pickle.dump(score_dict, score_file_w)
 	score_file_w.close()
+	dlock.release()
 
 	# Game is done
 	# Remove client from the list

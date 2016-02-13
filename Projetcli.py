@@ -20,14 +20,13 @@ user_exit = 0
 
 while not user_exit: # While the game continues
 	resp = '' # No answer given by the user yet
-
 	c = 0
 	question = s.recv(1024)
 	if question == 'end':
 		break
+	else:
 		while (resp.upper() not in ['Y', 'N', 'M', 'EXIT']):
 			if c == 0:
-
 				print '\n', question
 		 		resp = raw_input("Yes (Y) / No (N) / Maybe (M): ")
 		 		c +=1
@@ -37,27 +36,24 @@ while not user_exit: # While the game continues
 		if resp.upper() in ['EXIT']:
 			user_exit = 1
 			break
-
 		if not user_exit :
 			s.sendto(resp,('',51432))
 
 #End of Game
 
 if not user_exit :       
-
-	#Serveur send his answer
+	#Server sends his answer
 	prop = s.recv(1024)
 	print '\n',prop 
 	rep = raw_input("Yes (Y) / No (N): ")
 
-
-	#if it's the good answer, serveur end the game 
+	#if it's the good answer, server ends the game 
 	if rep == 'Y' or rep == 'y':
 		s.sendto(rep,('',51432))
 		rep2 = s.recv(1024)
 		print '\n', rep2
-
-	#if it's not, server ask to write the name
+	
+	#if it's not, server asks to write the name
 	elif rep == 'N' or rep == 'n':
 		s.sendto(rep,('',51432))
 		rep2 = s.recv(1024)
