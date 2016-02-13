@@ -7,10 +7,15 @@ import signal
 from socket import *
 import random, pickle
 
+PORT = 8000
+if len(sys.argv) >= 2 : # Port as an argument
+	PORT = int(sys.argv[1])
+print PORT
+
 #definition of socket type TCP 
 sock = socket(AF_INET, SOCK_STREAM)
 sock.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
-sock.bind(("",8000))
+sock.bind(("",PORT))
 sock.listen(100)
 
 # Lock used to avoid conflict in writing scores in the database
