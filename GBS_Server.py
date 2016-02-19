@@ -1,9 +1,6 @@
 import threading
-import socket
-import select
 from time import time, ctime
 import sys
-import signal
 from socket import *
 import random, pickle
 
@@ -139,7 +136,7 @@ def thread_test(newSocket):
 	ans = ans.upper()
 
 	if ans == 'Y':
-		newSocket.sendall("Cool ! \nThanks for Playing GuessBS! \n")	
+		newSocket.sendall("Cool! \nThanks for Playing GuessBS! \n")	
 		# It is not the first time the character have been chosen by the user
 		# Store the answer for each question in his dictionary
 		for question_id in guess_dict.keys():
